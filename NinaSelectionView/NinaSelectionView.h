@@ -66,10 +66,7 @@ typedef NS_ENUM(NSInteger, NinaPopDirection) {
  *  Show NinaSelectionView when you needed.
  */
 - (void)showOrDismissNinaViewWithDuration:(NSTimeInterval)duration;
-/**
- *  Dismiss NinaSelectionView.
- */
-//- (void)dismissNinaView;
+
 
 /**
  *  Default Selected button tag number.(Range from 1~...)

@@ -36,12 +36,13 @@
     NSMutableArray *buttonArray;
     double tapDuration;
     BOOL showState;
-    BOOL longScrollState;
+    BOOL longRangeScrollMode;
 }
 
 - (instancetype)initWithTitles:(NSArray *)titles PopDirection:(NinaPopDirection)direction {
     if (self = [super init]) {
         if (titles.count > 0) {
+            self.hidden = YES;
             self.backgroundColor = [UIColor whiteColor];
             buttonArray = [NSMutableArray array];
             ninaDireciton = direction;
@@ -53,9 +54,9 @@
             }else {
                 columnNum = titles.count / PerNum + 1;
             }
-            selectionHeight = buttonTopSpace * 2 + (buttonHeight + buttonSpace) * columnNum - buttonSpace;
+            selectionHeight = Nina_Button_TopSpace * 2 + (Nina_Button_Height + Nina_Button_Space) * columnNum - Nina_Button_Space;
             if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-                longScrollState = YES;
+                longRangeScrollMode = YES;
             }
             CGFloat defaultY = 0;
             CGFloat defaultX = 0;
@@ -69,39 +70,23 @@
                 case 2:
                     defaultX = -(FUll_VIEW_WIDTH);
                     if (direction == 7) {
-                        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-                            defaultY = 0;
-                        }else {
-                            defaultY = (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
-                        }
+                        defaultY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
                     }else if (direction == 8) {
-                        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-                            defaultY = 0;
-                        }else {
-                            defaultY = FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
-                        }
+                        defaultY = longRangeScrollMode?0:FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
                     }
                     break;
                 case 3:
                     defaultX = (FUll_VIEW_WIDTH);
                     if (direction == 10) {
-                        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-                            defaultY = 0;
-                        }else {
-                            defaultY = (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
-                        }
+                        defaultY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
                     }else if (direction == 11) {
-                        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-                            defaultY = 0;
-                        }else {
-                        defaultY = FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
-                        }
+                        defaultY = longRangeScrollMode?0:FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
                     }
                     break;
                 default:
                     break;
             }
-            if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+            if (longRangeScrollMode) {
                 self.contentSize = CGSizeMake(0, selectionHeight);
                 self.userInteractionEnabled = YES;
                 self.alwaysBounceVertical = YES;
@@ -178,37 +163,23 @@
             ninaViewY = FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
         }
     }else if (ninaDireciton == 7 || ninaDireciton == 10) {
-        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-            ninaViewY = 0;
-        }else {
-            ninaViewY = (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
-        }
+        ninaViewY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
     }else if (ninaDireciton == 8 || ninaDireciton == 11) {
-        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-            ninaViewY = 0;
-        }else {
-            ninaViewY = FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
-        }
+        ninaViewY = longRangeScrollMode?0:FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
     }
     if ((self.frame.origin.y == 0 && self.frame.origin.x == 0) || (self.frame.origin.x == 0 && self.frame.origin.y == (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2) || (self.frame.origin.y == FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight && self.frame.origin.x == 0)) {
         showState = NO;
-        [UIView animateWithDuration:0.3 animations:^{
-            self.shadowView.alpha = 0.f;
-        }];
+        if (_shadowEffect) {
+            [UIView animateWithDuration:0.3 animations:^{
+                self.shadowView.alpha = 0.f;
+            }];
+        }
         switch (ninaDireciton / 3) {
             case 0:
-                if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-                    ninaViewY = -(FUll_CONTENT_HEIGHT_WITHOUT_TAB);
-                }else {
-                    ninaViewY = -(selectionHeight);
-                }
+                ninaViewY = longRangeScrollMode?(-(FUll_CONTENT_HEIGHT_WITHOUT_TAB)):(-(selectionHeight));
                 break;
             case 1:
-                if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-                    ninaViewY = FUll_CONTENT_HEIGHT_WITHOUT_TAB + FUll_VIEW_HEIGHT;
-                }else {
-                    ninaViewY = selectionHeight + FUll_VIEW_HEIGHT;
-                }
+                ninaViewY = longRangeScrollMode?(FUll_CONTENT_HEIGHT_WITHOUT_TAB + FUll_VIEW_HEIGHT):(selectionHeight + FUll_VIEW_HEIGHT);
                 break;
             case 2:
                 ninaViewX = -(FUll_VIEW_WIDTH);
@@ -220,33 +191,39 @@
                 break;
         }
     }else {
+        self.hidden = NO;
         showState = YES;
         [self.superview bringSubviewToFront:self];
-        [self.superview insertSubview:self.shadowView belowSubview:self];
-        [UIView animateWithDuration:0.3 animations:^{
-            if (_shadowAlpha > 0.f) {
-                self.shadowView.alpha = _shadowAlpha;
-            }else {
-                self.shadowView.alpha = 0.5f;
-            }
-        }];
+        if (_shadowEffect) {
+            [self.superview insertSubview:self.shadowView belowSubview:self];
+            [UIView animateWithDuration:0.3 animations:^{
+                if (_shadowAlpha > 0.f) {
+                    self.shadowView.alpha = _shadowAlpha;
+                }else {
+                    self.shadowView.alpha = 0.5f;
+                }
+            }];
+        }
     }
     if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
         [UIView animateWithDuration:duration animations:^{
             self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, FUll_CONTENT_HEIGHT_WITHOUT_TAB);
+        }completion:^(BOOL finished) {
+            if (showState == NO) {
+                self.hidden = YES;
+            }
         }];
     }else {
         if ((ninaDireciton == 1 || ninaDireciton == 4 || ninaDireciton == 7 || ninaDireciton ==10) && showState == YES) {
-            //            self.center = self.window.center;
             ninaViewX = 0;
-            if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-                ninaViewY = 0;
-            }else {
-                ninaViewY = (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
-            }
+            ninaViewY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
         }
         [UIView animateWithDuration:duration animations:^{
             self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, selectionHeight);
+        }completion:^(BOOL finished) {
+            if (showState == NO) {
+                self.hidden = YES;
+            }
         }];
     }
 }
@@ -257,9 +234,9 @@
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.tag = i + 1;
         if(i < PerNum && i >= 0){
-            button.frame = CGRectMake(buttonX +  i * (buttonWidth + buttonSpace) , buttonTopSpace, buttonWidth, buttonHeight);
+            button.frame = CGRectMake(Nina_Button_X +  i * (Nina_Button_Width + Nina_Button_Space) , Nina_Button_TopSpace, Nina_Button_Width, Nina_Button_Height);
         }else {
-            button.frame = CGRectMake(buttonX +  (i % PerNum) * (buttonWidth + buttonSpace) , buttonTopSpace + (buttonHeight + buttonSpace) * (i / PerNum), buttonWidth, buttonHeight);
+            button.frame = CGRectMake(Nina_Button_X +  (i % PerNum) * (Nina_Button_Width + Nina_Button_Space) , Nina_Button_TopSpace + (Nina_Button_Height + Nina_Button_Space) * (i / PerNum), Nina_Button_Width, Nina_Button_Height);
         }
         [button addTarget:self action:@selector(ninaButtonAciton:) forControlEvents:UIControlEventTouchDown];
         button.backgroundColor = [UIColor whiteColor];

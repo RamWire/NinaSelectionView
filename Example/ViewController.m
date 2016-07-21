@@ -28,14 +28,13 @@
     self.navigationController.navigationBar.translucent = NO;
     self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.ninaSelectionView];
-    _ninaSelectionView.shadowEffect = YES;
     [self.view addSubview:self.myTableView];
 }
 
 #pragma mark - LazyLoad
 - (NinaSelectionView *)ninaSelectionView {
     if (!_ninaSelectionView) {
-        _ninaSelectionView = [[NinaSelectionView alloc] initWithTitles:[self titlesArray] PopDirection:NinaPopFromLeftToTop];
+        _ninaSelectionView = [[NinaSelectionView alloc] initWithTitles:[self titlesArray] PopDirection:NinaPopFromAboveToTop];
         _ninaSelectionView.ninaSelectionDelegate = self;
         _ninaSelectionView.defaultSelected = 1;
         _ninaSelectionView.shadowEffect = YES;
