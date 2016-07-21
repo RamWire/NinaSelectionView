@@ -11,7 +11,6 @@
 #import "NinaSelectionView.h"
 
 @interface ViewController ()<NinaSelectionDelegate,UITableViewDelegate,UITableViewDataSource>
-@property (nonatomic, strong) UIButton *testBtn;
 @property (nonatomic, strong) NinaSelectionView *ninaSelectionView;
 @property (nonatomic, strong) UITableView *myTableView;
 @end
@@ -36,24 +35,25 @@
 #pragma mark - LazyLoad
 - (NinaSelectionView *)ninaSelectionView {
     if (!_ninaSelectionView) {
-        _ninaSelectionView = [[NinaSelectionView alloc] initWithTitles:[self titlesArray] PopDirection:NinaPopDirectionFromLeft];
+        _ninaSelectionView = [[NinaSelectionView alloc] initWithTitles:[self titlesArray] PopDirection:NinaPopDirectionFromAbove];
         _ninaSelectionView.ninaSelectionDelegate = self;
         _ninaSelectionView.defaultSelected = 1;
         _ninaSelectionView.shadowEffect = YES;
+//        _ninaSelectionView.shadowAlpha = 0.9;
     }
     return _ninaSelectionView;
 }
 
 #pragma mark - TestButtonAction
 - (void)popAction {
-    [self.ninaSelectionView showNinaViewWithDuration:0.3];
+    [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.3];
 }
 
 #pragma mark - NinaSelectionDelegate
 - (void)selectNinaAction:(UIButton *)button {
     NSLog(@"Select %li button",(long)button.tag);
     changeStr = button.titleLabel.text;
-    [self.ninaSelectionView showNinaViewWithDuration:0.3];
+    [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.3];
     [self.myTableView reloadData];
 }
 

@@ -57,20 +57,24 @@ typedef NS_ENUM(NSInteger, NinaPopDirection) {
 /**
  *  Show NinaSelectionView when you needed.
  */
-- (void)showNinaViewWithDuration:(NSTimeInterval)duration;
+- (void)showOrDismissNinaViewWithDuration:(NSTimeInterval)duration;
 /**
  *  Dismiss NinaSelectionView.
  */
 //- (void)dismissNinaView;
 
 /**
- *  default Selected button tag number.(Range from 1~...)
+ *  Default Selected button tag number.(Range from 1~...)
  */
 @property (nonatomic, assign) NSInteger defaultSelected;
 /**
- *  show shadowEffect or not.
+ *  Show shadowEffect or not.Default shadowAlpha is 0.5.
  */
 @property (nonatomic, assign) BOOL shadowEffect;
+/**
+ *  If turn on shadowEffect,you can set alpha for shadowView.
+ */
+@property (nonatomic, assign) CGFloat shadowAlpha;
 @property (nonatomic, weak)id<NinaSelectionDelegate>ninaSelectionDelegate;
 
 @end

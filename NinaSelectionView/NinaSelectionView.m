@@ -24,7 +24,7 @@
 #import "UIParameter.h"
 
 @interface NinaSelectionView()
-@property (nonatomic, strong) UIView *shadowView; //shadowMaskView
+@property (nonatomic, strong) UIView *shadowView;
 @property (nonatomic, strong) UIView *bottomLine;
 @end
 
@@ -83,7 +83,7 @@
             [self createSelectionButton];
             [self addSubview:self.bottomLine];
         }else {
-            NSLog(@"You need make a titles array for NinaSelectionView");
+            NSLog(@"Titles-array's count should not be zero.");
         }
     }
     return self;
@@ -100,9 +100,20 @@
     _shadowEffect = shadowEffect;
     if (_shadowEffect) {
         [self.superview insertSubview:self.shadowView belowSubview:self];
-        self.shadowView.hidden = YES;
+        [UIView animateWithDuration:0.3 animations:^{
+            self.shadowView.alpha = 0.f;
+        }];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissNinaView)];
         [self.shadowView addGestureRecognizer:tap];
+    }
+}
+
+- (void)setShadowAlpha:(CGFloat)shadowAlpha {
+    if (_shadowEffect && shadowAlpha > 0.f) {
+        _shadowAlpha = shadowAlpha;
+        self.shadowView.alpha = _shadowAlpha;
+    }else {
+        NSLog(@"You must set ShadowEffect to YES then shadowAlpha should be worked.");
     }
 }
 
@@ -111,7 +122,7 @@
     if (!_shadowView) {
         _shadowView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, FUll_VIEW_WIDTH, FUll_CONTENT_HEIGHT_WITHOUT_TAB)];
         _shadowView.backgroundColor = [UIColor blackColor];
-        _shadowView.alpha = 0.4;
+        _shadowView.alpha = 0.5f;
     }
     return _shadowView;
 }
@@ -125,12 +136,14 @@
 }
 
 #pragma mark - NinaSelectionMethod
-- (void)showNinaViewWithDuration:(NSTimeInterval)duration {
+- (void)showOrDismissNinaViewWithDuration:(NSTimeInterval)duration {
     tapDuration = duration;
     CGFloat ninaViewY = 0;
     CGFloat ninaViewX = 0;
     if (self.frame.origin.y == 0 && self.frame.origin.x == 0) {
-        self.shadowView.hidden = YES;
+        [UIView animateWithDuration:0.3 animations:^{
+            self.shadowView.alpha = 0.f;
+        }];
         switch (ninaDireciton) {
             case 0:
                 if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
@@ -158,7 +171,13 @@
     }else {
         [self.superview bringSubviewToFront:self];
         [self.superview insertSubview:self.shadowView belowSubview:self];
-        self.shadowView.hidden = NO;
+        [UIView animateWithDuration:0.3 animations:^{
+            if (_shadowAlpha > 0.f) {
+                self.shadowView.alpha = _shadowAlpha;
+            }else {
+                self.shadowView.alpha = 0.5f;
+            }
+        }];
     }
     if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
         [UIView animateWithDuration:duration animations:^{
@@ -217,7 +236,7 @@
 
 #pragma mark - TapAction
 - (void)tapToDismissNinaView {
-    [self showNinaViewWithDuration:tapDuration];
+    [self showOrDismissNinaViewWithDuration:tapDuration];
 }
 
 @end
