@@ -35,16 +35,15 @@
 #pragma mark - LazyLoad
 - (NinaSelectionView *)ninaSelectionView {
     if (!_ninaSelectionView) {
-        _ninaSelectionView = [[NinaSelectionView alloc] initWithTitles:[self titlesArray] PopDirection:NinaPopDirectionFromAbove];
+        _ninaSelectionView = [[NinaSelectionView alloc] initWithTitles:[self titlesArray] PopDirection:NinaPopFromLeftToTop];
         _ninaSelectionView.ninaSelectionDelegate = self;
         _ninaSelectionView.defaultSelected = 1;
         _ninaSelectionView.shadowEffect = YES;
-//        _ninaSelectionView.shadowAlpha = 0.9;
     }
     return _ninaSelectionView;
 }
 
-#pragma mark - TestButtonAction
+#pragma mark - RightBarButtonItemAction
 - (void)popAction {
     [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.3];
 }
@@ -89,6 +88,7 @@
     }
     return _myTableView;
 }
+
 #pragma mark - UITableViewDelegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 20;

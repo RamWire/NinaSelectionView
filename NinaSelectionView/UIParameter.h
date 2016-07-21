@@ -35,7 +35,7 @@
 #define NinaNavigationBarHeight 64
 
 //NinaSelectionView Parameters
-#define PerNum  3 //Better range between 2~5
+#define PerNum  3 //Better between 2~5
 #define buttonX 15
 #define buttonHeight 30
 #define buttonWidth (FUll_VIEW_WIDTH - 2 * buttonX - (PerNum - 1) * buttonSpace) / PerNum

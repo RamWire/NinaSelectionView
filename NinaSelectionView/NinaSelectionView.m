@@ -35,6 +35,8 @@
     NSArray *ninaTitles;
     NSMutableArray *buttonArray;
     double tapDuration;
+    BOOL showState;
+    BOOL longScrollState;
 }
 
 - (instancetype)initWithTitles:(NSArray *)titles PopDirection:(NinaPopDirection)direction {
@@ -52,9 +54,12 @@
                 columnNum = titles.count / PerNum + 1;
             }
             selectionHeight = buttonTopSpace * 2 + (buttonHeight + buttonSpace) * columnNum - buttonSpace;
+            if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+                longScrollState = YES;
+            }
             CGFloat defaultY = 0;
             CGFloat defaultX = 0;
-            switch (direction) {
+            switch (direction / 3) {
                 case 0:
                     defaultY = -(selectionHeight);
                     break;
@@ -63,9 +68,35 @@
                     break;
                 case 2:
                     defaultX = -(FUll_VIEW_WIDTH);
+                    if (direction == 7) {
+                        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+                            defaultY = 0;
+                        }else {
+                            defaultY = (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
+                        }
+                    }else if (direction == 8) {
+                        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+                            defaultY = 0;
+                        }else {
+                            defaultY = FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
+                        }
+                    }
                     break;
                 case 3:
                     defaultX = (FUll_VIEW_WIDTH);
+                    if (direction == 10) {
+                        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+                            defaultY = 0;
+                        }else {
+                            defaultY = (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
+                        }
+                    }else if (direction == 11) {
+                        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+                            defaultY = 0;
+                        }else {
+                        defaultY = FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -91,9 +122,11 @@
 
 #pragma mark - SetMethod
 - (void)setDefaultSelected:(NSInteger)defaultSelected {
-    _defaultSelected = defaultSelected;
-    UIButton *selectBtn = buttonArray[defaultSelected - 1];
-    [self ninaSelectChangeColor:selectBtn];
+    if (buttonArray.count > 0) {
+        _defaultSelected = defaultSelected;
+        UIButton *selectBtn = buttonArray[defaultSelected - 1];
+        [self ninaSelectChangeColor:selectBtn];
+    }
 }
 
 - (void)setShadowEffect:(BOOL)shadowEffect {
@@ -140,11 +173,29 @@
     tapDuration = duration;
     CGFloat ninaViewY = 0;
     CGFloat ninaViewX = 0;
-    if (self.frame.origin.y == 0 && self.frame.origin.x == 0) {
+    if (ninaDireciton == 2 || ninaDireciton == 5 || ninaDireciton == 8 || ninaDireciton ==11) {
+        if (selectionHeight <= FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+            ninaViewY = FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
+        }
+    }else if (ninaDireciton == 7 || ninaDireciton == 10) {
+        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+            ninaViewY = 0;
+        }else {
+            ninaViewY = (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
+        }
+    }else if (ninaDireciton == 8 || ninaDireciton == 11) {
+        if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+            ninaViewY = 0;
+        }else {
+            ninaViewY = FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
+        }
+    }
+    if ((self.frame.origin.y == 0 && self.frame.origin.x == 0) || (self.frame.origin.x == 0 && self.frame.origin.y == (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2) || (self.frame.origin.y == FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight && self.frame.origin.x == 0)) {
+        showState = NO;
         [UIView animateWithDuration:0.3 animations:^{
             self.shadowView.alpha = 0.f;
         }];
-        switch (ninaDireciton) {
+        switch (ninaDireciton / 3) {
             case 0:
                 if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
                     ninaViewY = -(FUll_CONTENT_HEIGHT_WITHOUT_TAB);
@@ -154,9 +205,9 @@
                 break;
             case 1:
                 if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-                    ninaViewY = -(FUll_CONTENT_HEIGHT_WITHOUT_TAB);
-                }else {
                     ninaViewY = FUll_CONTENT_HEIGHT_WITHOUT_TAB + FUll_VIEW_HEIGHT;
+                }else {
+                    ninaViewY = selectionHeight + FUll_VIEW_HEIGHT;
                 }
                 break;
             case 2:
@@ -169,6 +220,7 @@
                 break;
         }
     }else {
+        showState = YES;
         [self.superview bringSubviewToFront:self];
         [self.superview insertSubview:self.shadowView belowSubview:self];
         [UIView animateWithDuration:0.3 animations:^{
@@ -184,6 +236,15 @@
             self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, FUll_CONTENT_HEIGHT_WITHOUT_TAB);
         }];
     }else {
+        if ((ninaDireciton == 1 || ninaDireciton == 4 || ninaDireciton == 7 || ninaDireciton ==10) && showState == YES) {
+            //            self.center = self.window.center;
+            ninaViewX = 0;
+            if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+                ninaViewY = 0;
+            }else {
+                ninaViewY = (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
+            }
+        }
         [UIView animateWithDuration:duration animations:^{
             self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, selectionHeight);
         }];

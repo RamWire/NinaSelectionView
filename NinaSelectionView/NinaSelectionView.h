@@ -24,13 +24,21 @@
 
 typedef NS_ENUM(NSInteger, NinaPopDirection) {
     /**<  Pop from above   **/
-    NinaPopDirectionFromAbove = 0,
-    /**<  Pop from underside   **/
-    NinaPopDirectionFromBelow = 1,
+    NinaPopFromAboveToTop = 0,
+    NinaPopFromAboveToMiddle = 1,
+    NinaPopFromAboveToBottom = 2,
+    /**<  Pop from below   **/
+    NinaPopFromBelowToTop = 3,
+    NinaPopFromBelowToMiddle = 4,
+    NinaPopFromBelowToBottom = 5,
     /**<  Pop from left   **/
-    NinaPopDirectionFromLeft = 2,
+    NinaPopFromLeftToTop = 6,
+    NinaPopFromLeftToMiddle = 7,
+    NinaPopFromLeftToBottom = 8,
     /**<  Pop from right   **/
-    NinaPopDirectionFromRight = 3,
+    NinaPopFromRightToTop = 9,
+    NinaPopFromRightToMiddle = 10,
+    NinaPopFromRightToBottom = 11,
 };
 
 @protocol NinaSelectionDelegate <NSObject>
