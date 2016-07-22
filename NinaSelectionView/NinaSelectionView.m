@@ -22,6 +22,7 @@
 
 #import "NinaSelectionView.h"
 #import "UIParameter.h"
+#define Hold_Duration 0.2
 
 @interface NinaSelectionView()
 @property (nonatomic, strong) UIView *shadowView;
@@ -37,6 +38,9 @@
     double tapDuration;
     BOOL showState;
     BOOL longRangeScrollMode;
+    CGPoint ninaStartPoint;
+    CGPoint ninaOriginPoint;
+    BOOL ninaContain;
 }
 
 - (instancetype)initWithTitles:(NSArray *)titles PopDirection:(NinaPopDirection)direction {
@@ -88,7 +92,6 @@
             }
             if (longRangeScrollMode) {
                 self.contentSize = CGSizeMake(0, selectionHeight);
-                self.userInteractionEnabled = YES;
                 self.alwaysBounceVertical = YES;
                 self.showsVerticalScrollIndicator = YES;
                 self.frame = CGRectMake(defaultX, defaultY, FUll_VIEW_WIDTH, FUll_CONTENT_HEIGHT_WITHOUT_TAB);
@@ -279,7 +282,7 @@
         }else {
             button.frame = CGRectMake(Nina_Button_X +  (i % PerNum) * (Nina_Button_Width + Nina_Button_Space) , Nina_Button_TopSpace + (Nina_Button_Height + Nina_Button_Space) * (i / PerNum), Nina_Button_Width, Nina_Button_Height);
         }
-        [button addTarget:self action:@selector(ninaButtonAciton:) forControlEvents:UIControlEventTouchDown];
+        [button addTarget:self action:@selector(ninaButtonAciton:) forControlEvents:UIControlEventTouchUpInside];
         button.backgroundColor = [UIColor whiteColor];
         [button setTitle:[ninaTitles objectAtIndex:i] forState:UIControlStateNormal];
         [button setTitleColor:UIColorFromRGB(0x656667) forState:UIControlStateNormal];
@@ -288,8 +291,62 @@
         button.layer.borderColor = UIColorFromRGB(0xDBDCDD).CGColor;
         button.layer.borderWidth = 1;
         [self addSubview:button];
+        UILongPressGestureRecognizer *longGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(buttonLongPressed:)];
+        [button addGestureRecognizer:longGesture];
         [buttonArray addObject:button];
     }
+}
+
+#pragma mark - UILongPressGestureRecognizerAction
+- (void)buttonLongPressed:(UILongPressGestureRecognizer *)sender {
+    UIButton *btn = (UIButton *)sender.view;
+    if (sender.state == UIGestureRecognizerStateBegan) {
+        ninaStartPoint = [sender locationInView:sender.view];
+        ninaOriginPoint = btn.center;
+        [UIView animateWithDuration:Hold_Duration animations:^{
+            btn.transform = CGAffineTransformMakeScale(1.1, 1.1);
+            btn.alpha = 0.7;
+        }];
+    }else if (sender.state == UIGestureRecognizerStateChanged) {
+        CGPoint newDragPoint = [sender locationInView:sender.view];
+        CGFloat dragChangeX = newDragPoint.x - ninaStartPoint.x;
+        CGFloat dragChangeY = newDragPoint.y - ninaStartPoint.y;
+        btn.center = CGPointMake(btn.center.x + dragChangeX,btn.center.y + dragChangeY);
+        NSInteger index = [self buttonIndexOfPoint:btn.center withDragButton:btn];
+        if (index < 0) {
+            ninaContain = NO;
+        }else {
+            [UIView animateWithDuration:Hold_Duration animations:^{
+                CGPoint tempPoint = CGPointZero;
+                UIButton *button = buttonArray[index];
+                tempPoint = button.center;
+                button.center = ninaOriginPoint;
+                btn.center = tempPoint;
+                ninaOriginPoint = btn.center;
+                ninaContain = YES;
+            }];
+        }
+    }else if (sender.state == UIGestureRecognizerStateEnded) {
+        [UIView animateWithDuration:Hold_Duration animations:^{
+            btn.transform = CGAffineTransformIdentity;
+            btn.alpha = 1.0;
+            if (!ninaContain) {
+                btn.center = ninaOriginPoint;
+            }
+        }];
+    }
+}
+
+- (NSInteger)buttonIndexOfPoint:(CGPoint)point withDragButton:(UIButton *)btn {
+    for (NSInteger i = 0; i < buttonArray.count; i++) {
+        UIButton *button = buttonArray[i];
+        if (button != btn) {
+            if (CGRectContainsPoint(button.frame, point)) {
+                return i;
+            }
+        }
+    }
+    return -1;
 }
 
 #pragma mark - NinaButtonAction
