@@ -34,7 +34,7 @@
 #pragma mark - LazyLoad
 - (NinaSelectionView *)ninaSelectionView {
     if (!_ninaSelectionView) {
-        _ninaSelectionView = [[NinaSelectionView alloc] initWithTitles:[self titlesArray] PopDirection:NinaPopFromAboveToTop];
+        _ninaSelectionView = [[NinaSelectionView alloc] initWithTitles:[self titlesArray] PopDirection:NinaPopFromRightToBottom];
         _ninaSelectionView.ninaSelectionDelegate = self;
         _ninaSelectionView.defaultSelected = 1;
         _ninaSelectionView.shadowEffect = YES;
@@ -44,7 +44,7 @@
 
 #pragma mark - RightBarButtonItemAction
 - (void)popAction {
-    [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.3];
+    [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.5 usingNinaSpringWithDamping:0.75 initialNinaSpringVelocity:0.01];
 }
 
 #pragma mark - NinaSelectionDelegate

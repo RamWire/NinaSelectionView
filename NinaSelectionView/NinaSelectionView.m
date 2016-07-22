@@ -118,9 +118,7 @@
     _shadowEffect = shadowEffect;
     if (_shadowEffect) {
         [self.superview insertSubview:self.shadowView belowSubview:self];
-        [UIView animateWithDuration:0.3 animations:^{
-            self.shadowView.alpha = 0.f;
-        }];
+        self.shadowView.alpha = 0.f;
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapToDismissNinaView)];
         [self.shadowView addGestureRecognizer:tap];
     }
@@ -155,10 +153,74 @@
 
 #pragma mark - NinaSelectionMethod
 - (void)showOrDismissNinaViewWithDuration:(NSTimeInterval)duration {
+    NSArray *locateArray = [self showOrDismissDetailMethodWithDuration:duration];
+    if (locateArray.count != 2) {
+        return;
+    }
+    CGFloat ninaViewX = [locateArray[0] floatValue];
+    CGFloat ninaViewY = [locateArray[1] floatValue];
+    if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+        [UIView animateWithDuration:duration animations:^{
+            self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, FUll_CONTENT_HEIGHT_WITHOUT_TAB);
+        }completion:^(BOOL finished) {
+            if (showState == NO) {
+                self.hidden = YES;
+            }
+        }];
+    }else {
+        if ((ninaDireciton == 1 || ninaDireciton == 4 || ninaDireciton == 7 || ninaDireciton == 10) && showState) {
+            ninaViewX = 0;
+            ninaViewY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
+        }
+        [UIView animateWithDuration:duration animations:^{
+            self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, selectionHeight);
+        } completion:^(BOOL finished) {
+            if (showState == NO) {
+                self.hidden = YES;
+            }
+        }];
+    }
+}
+
+- (void)showOrDismissNinaViewWithDuration:(NSTimeInterval)duration usingNinaSpringWithDamping:(CGFloat)dampingRatio initialNinaSpringVelocity:(CGFloat)velocity {
+    NSArray *locateArray = [self showOrDismissDetailMethodWithDuration:duration];
+    if (locateArray.count != 2) {
+        return;
+    }
+    CGFloat ninaViewX = [locateArray[0] floatValue];
+    CGFloat ninaViewY = [locateArray[1] floatValue];
+    CGFloat dampingOrNot = ((dampingRatio < 1) && (dampingRatio > 0))?dampingRatio:0.5;
+    CGFloat damping = showState?dampingOrNot:1;
+    CGFloat VelocityNum = ((velocity < 1) && (velocity > 0))?velocity:0.75;
+    if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+        [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:damping initialSpringVelocity:VelocityNum options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
+            self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, FUll_CONTENT_HEIGHT_WITHOUT_TAB);
+        }completion:^(BOOL finished) {
+            if (showState == NO) {
+                self.hidden = YES;
+            }
+        }];
+    }else {
+        if ((ninaDireciton == 1 || ninaDireciton == 4 || ninaDireciton == 7 || ninaDireciton == 10) && showState) {
+            ninaViewX = 0;
+            ninaViewY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
+        }
+        [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:damping initialSpringVelocity:VelocityNum options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
+            self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, selectionHeight);
+        } completion:^(BOOL finished) {
+            if (showState == NO) {
+                self.hidden = YES;
+            }
+        }];
+    }
+}
+
+#pragma mark - PrivateMethod
+- (NSArray *)showOrDismissDetailMethodWithDuration:(NSTimeInterval)duration {
     tapDuration = duration;
     CGFloat ninaViewY = 0;
     CGFloat ninaViewX = 0;
-    if (ninaDireciton == 2 || ninaDireciton == 5 || ninaDireciton == 8 || ninaDireciton ==11) {
+    if (ninaDireciton == 2 || ninaDireciton == 5 || ninaDireciton == 8 || ninaDireciton == 11) {
         if (selectionHeight <= FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
             ninaViewY = FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
         }
@@ -170,7 +232,7 @@
     if ((self.frame.origin.y == 0 && self.frame.origin.x == 0) || (self.frame.origin.x == 0 && self.frame.origin.y == (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2) || (self.frame.origin.y == FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight && self.frame.origin.x == 0)) {
         showState = NO;
         if (_shadowEffect) {
-            [UIView animateWithDuration:0.3 animations:^{
+            [UIView animateWithDuration:duration animations:^{
                 self.shadowView.alpha = 0.f;
             }];
         }
@@ -196,7 +258,7 @@
         [self.superview bringSubviewToFront:self];
         if (_shadowEffect) {
             [self.superview insertSubview:self.shadowView belowSubview:self];
-            [UIView animateWithDuration:0.3 animations:^{
+            [UIView animateWithDuration:duration animations:^{
                 if (_shadowAlpha > 0.f) {
                     self.shadowView.alpha = _shadowAlpha;
                 }else {
@@ -205,30 +267,9 @@
             }];
         }
     }
-    if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-        [UIView animateWithDuration:duration animations:^{
-            self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, FUll_CONTENT_HEIGHT_WITHOUT_TAB);
-        }completion:^(BOOL finished) {
-            if (showState == NO) {
-                self.hidden = YES;
-            }
-        }];
-    }else {
-        if ((ninaDireciton == 1 || ninaDireciton == 4 || ninaDireciton == 7 || ninaDireciton ==10) && showState == YES) {
-            ninaViewX = 0;
-            ninaViewY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
-        }
-        [UIView animateWithDuration:duration animations:^{
-            self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, selectionHeight);
-        }completion:^(BOOL finished) {
-            if (showState == NO) {
-                self.hidden = YES;
-            }
-        }];
-    }
+    return @[[NSString stringWithFormat:@"%f",ninaViewX],[NSString stringWithFormat:@"%f",ninaViewY]];
 }
 
-#pragma mark - PrivateMethod
 - (void)createSelectionButton {
     for (int i = 0; i < ninaTitles.count; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];

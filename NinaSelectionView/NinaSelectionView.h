@@ -63,10 +63,19 @@ typedef NS_ENUM(NSInteger, NinaPopDirection) {
  */
 - (instancetype)initWithTitles:(NSArray *)titles PopDirection:(NinaPopDirection)direction;
 /**
- *  Show NinaSelectionView when you needed.
+ *  Show or dismiss NinaSelectionView when you needed.(No spring effect)
+ *
+ *  @param duration NinaSelectionView pop animation time.
  */
 - (void)showOrDismissNinaViewWithDuration:(NSTimeInterval)duration;
-
+/**
+ *  Show or dismiss NinaSelectionView when you needed.(With spring effect)
+ *
+ *  @param duration     NinaSelectionView pop animation time.
+ *  @param dampingRatio NinaSelectionView damping level
+ *  @param velocity     init pop speed level
+ */
+- (void)showOrDismissNinaViewWithDuration:(NSTimeInterval)duration usingNinaSpringWithDamping:(CGFloat)dampingRatio initialNinaSpringVelocity:(CGFloat)velocity;
 
 /**
  *  Default Selected button tag number.(Range from 1~...)
