@@ -22,7 +22,6 @@
 
 #import "NinaSelectionView.h"
 #import "UIParameter.h"
-#define Hold_Duration 0.2
 
 @interface NinaSelectionView()
 @property (nonatomic, strong) UIView *shadowView;
@@ -36,8 +35,11 @@
     NSArray *ninaTitles;
     NSMutableArray *buttonArray;
     double tapDuration;
+    CGFloat tapDamping;
+    CGFloat tapVelocity;
     BOOL showState;
-    BOOL longRangeScrollMode;
+    BOOL verticalScrollMode;
+    BOOL horizontalScrollMode;
     CGPoint ninaStartPoint;
     CGPoint ninaOriginPoint;
     BOOL ninaContain;
@@ -60,10 +62,13 @@
             }
             selectionHeight = Nina_Button_TopSpace * 2 + (Nina_Button_Height + Nina_Button_Space) * columnNum - Nina_Button_Space;
             if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
-                longRangeScrollMode = YES;
+                verticalScrollMode = YES;
+            }
+            if (Nina_View_X < 0) {
+                horizontalScrollMode = YES;
             }
             CGFloat defaultY = 0;
-            CGFloat defaultX = 0;
+            CGFloat defaultX = horizontalScrollMode?0:Nina_View_X;
             switch (direction / 3) {
                 case 0:
                     defaultY = -(selectionHeight);
@@ -72,32 +77,47 @@
                     defaultY = selectionHeight + FUll_VIEW_HEIGHT;
                     break;
                 case 2:
-                    defaultX = -(FUll_VIEW_WIDTH);
+                    defaultX = -(Nina_View_Width);
                     if (direction == 7) {
-                        defaultY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
+                        defaultY = verticalScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
                     }else if (direction == 8) {
-                        defaultY = longRangeScrollMode?0:FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
+                        defaultY = verticalScrollMode?0:FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
                     }
                     break;
                 case 3:
                     defaultX = (FUll_VIEW_WIDTH);
                     if (direction == 10) {
-                        defaultY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
+                        defaultY = verticalScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
                     }else if (direction == 11) {
-                        defaultY = longRangeScrollMode?0:FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
+                        defaultY = verticalScrollMode?0:FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
                     }
                     break;
                 default:
                     break;
             }
-            if (longRangeScrollMode) {
-                self.contentSize = CGSizeMake(0, selectionHeight);
+            if (verticalScrollMode) {
                 self.alwaysBounceVertical = YES;
                 self.showsVerticalScrollIndicator = YES;
-                self.frame = CGRectMake(defaultX, defaultY, FUll_VIEW_WIDTH, FUll_CONTENT_HEIGHT_WITHOUT_TAB);
+                if (horizontalScrollMode) {
+                    self.bounces = NO;
+                    self.contentSize = CGSizeMake(Nina_View_Width, selectionHeight);
+                    self.alwaysBounceHorizontal = YES;
+                    self.showsHorizontalScrollIndicator = YES;
+                    self.frame = CGRectMake(defaultX, defaultY, FUll_VIEW_WIDTH, FUll_CONTENT_HEIGHT_WITHOUT_TAB);
+                }else {
+                    self.contentSize = CGSizeMake(0, selectionHeight);
+                    self.frame = CGRectMake(defaultX, defaultY, Nina_View_Width, FUll_CONTENT_HEIGHT_WITHOUT_TAB);
+                }
             }else {
-                self.scrollEnabled = NO;
-                self.frame = CGRectMake(defaultX, defaultY, FUll_VIEW_WIDTH, selectionHeight);
+                if (horizontalScrollMode) {
+                    self.contentSize = CGSizeMake(Nina_View_Width, 0);
+                    self.alwaysBounceHorizontal = YES;
+                    self.showsHorizontalScrollIndicator = YES;
+                    self.frame = CGRectMake(defaultX, defaultY, FUll_VIEW_WIDTH, selectionHeight);
+                }else {
+                    self.scrollEnabled = NO;
+                    self.frame = CGRectMake(defaultX, defaultY, Nina_View_Width, selectionHeight);
+                }
             }
             [self createSelectionButton];
             [self addSubview:self.bottomLine];
@@ -148,7 +168,7 @@
 
 - (UIView *)bottomLine {
     if (!_bottomLine) {
-        _bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0,selectionHeight - 2, FUll_VIEW_WIDTH, 2)];
+        _bottomLine = [[UIView alloc] initWithFrame:CGRectMake(0,selectionHeight - 2, Nina_View_Width, 2)];
         _bottomLine.backgroundColor = UIColorFromRGB(0xb2b2b2);
     }
     return _bottomLine;
@@ -162,9 +182,9 @@
     }
     CGFloat ninaViewX = [locateArray[0] floatValue];
     CGFloat ninaViewY = [locateArray[1] floatValue];
-    if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+    if (verticalScrollMode) {
         [UIView animateWithDuration:duration animations:^{
-            self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, FUll_CONTENT_HEIGHT_WITHOUT_TAB);
+            self.frame = CGRectMake(ninaViewX, ninaViewY, (horizontalScrollMode?FUll_VIEW_WIDTH:Nina_View_Width), FUll_CONTENT_HEIGHT_WITHOUT_TAB);
         }completion:^(BOOL finished) {
             if (showState == NO) {
                 self.hidden = YES;
@@ -172,11 +192,11 @@
         }];
     }else {
         if ((ninaDireciton == 1 || ninaDireciton == 4 || ninaDireciton == 7 || ninaDireciton == 10) && showState) {
-            ninaViewX = 0;
-            ninaViewY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
+            ninaViewX = horizontalScrollMode ?0:Nina_View_X;
+            ninaViewY = verticalScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
         }
         [UIView animateWithDuration:duration animations:^{
-            self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, selectionHeight);
+            self.frame = CGRectMake(ninaViewX, ninaViewY, (horizontalScrollMode?FUll_VIEW_WIDTH:Nina_View_Width), selectionHeight);
         } completion:^(BOOL finished) {
             if (showState == NO) {
                 self.hidden = YES;
@@ -195,9 +215,11 @@
     CGFloat dampingOrNot = ((dampingRatio < 1) && (dampingRatio > 0))?dampingRatio:0.5;
     CGFloat damping = showState?dampingOrNot:1;
     CGFloat VelocityNum = ((velocity < 1) && (velocity > 0))?velocity:0.75;
-    if (selectionHeight > FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
+    tapDamping = damping;
+    tapVelocity = VelocityNum;
+    if (verticalScrollMode) {
         [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:damping initialSpringVelocity:VelocityNum options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
-            self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, FUll_CONTENT_HEIGHT_WITHOUT_TAB);
+            self.frame = CGRectMake(ninaViewX, ninaViewY, (horizontalScrollMode?FUll_VIEW_WIDTH:Nina_View_Width), FUll_CONTENT_HEIGHT_WITHOUT_TAB);
         }completion:^(BOOL finished) {
             if (showState == NO) {
                 self.hidden = YES;
@@ -205,11 +227,11 @@
         }];
     }else {
         if ((ninaDireciton == 1 || ninaDireciton == 4 || ninaDireciton == 7 || ninaDireciton == 10) && showState) {
-            ninaViewX = 0;
-            ninaViewY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
+            ninaViewX = horizontalScrollMode ?0:Nina_View_X;
+            ninaViewY = verticalScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
         }
         [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:damping initialSpringVelocity:VelocityNum options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
-            self.frame = CGRectMake(ninaViewX, ninaViewY, FUll_VIEW_WIDTH, selectionHeight);
+            self.frame = CGRectMake(ninaViewX, ninaViewY, (horizontalScrollMode?FUll_VIEW_WIDTH:Nina_View_Width), selectionHeight);
         } completion:^(BOOL finished) {
             if (showState == NO) {
                 self.hidden = YES;
@@ -222,17 +244,17 @@
 - (NSArray *)showOrDismissDetailMethodWithDuration:(NSTimeInterval)duration {
     tapDuration = duration;
     CGFloat ninaViewY = 0;
-    CGFloat ninaViewX = 0;
+    CGFloat ninaViewX = horizontalScrollMode ?0:Nina_View_X;
     if (ninaDireciton == 2 || ninaDireciton == 5 || ninaDireciton == 8 || ninaDireciton == 11) {
         if (selectionHeight <= FUll_CONTENT_HEIGHT_WITHOUT_TAB) {
             ninaViewY = FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
         }
     }else if (ninaDireciton == 7 || ninaDireciton == 10) {
-        ninaViewY = longRangeScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
+        ninaViewY = verticalScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
     }else if (ninaDireciton == 8 || ninaDireciton == 11) {
-        ninaViewY = longRangeScrollMode?0:FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
+        ninaViewY = verticalScrollMode?0:FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
     }
-    if ((self.frame.origin.y == 0 && self.frame.origin.x == 0) || (self.frame.origin.x == 0 && self.frame.origin.y == (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2) || (self.frame.origin.y == FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight && self.frame.origin.x == 0)) {
+    if ((self.frame.origin.y == 0 && self.frame.origin.x == (horizontalScrollMode ?0:Nina_View_X)) || (self.frame.origin.x == (horizontalScrollMode ?0:Nina_View_X) && self.frame.origin.y == (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2) || (self.frame.origin.y == FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight && self.frame.origin.x == (horizontalScrollMode ?0:Nina_View_X))) {
         showState = NO;
         if (_shadowEffect) {
             [UIView animateWithDuration:duration animations:^{
@@ -241,13 +263,13 @@
         }
         switch (ninaDireciton / 3) {
             case 0:
-                ninaViewY = longRangeScrollMode?(-(FUll_CONTENT_HEIGHT_WITHOUT_TAB)):(-(selectionHeight));
+                ninaViewY = verticalScrollMode?(-(FUll_CONTENT_HEIGHT_WITHOUT_TAB)):(-(selectionHeight));
                 break;
             case 1:
-                ninaViewY = longRangeScrollMode?(FUll_CONTENT_HEIGHT_WITHOUT_TAB + FUll_VIEW_HEIGHT):(selectionHeight + FUll_VIEW_HEIGHT);
+                ninaViewY = verticalScrollMode?(FUll_CONTENT_HEIGHT_WITHOUT_TAB + FUll_VIEW_HEIGHT):(selectionHeight + FUll_VIEW_HEIGHT);
                 break;
             case 2:
-                ninaViewX = -(FUll_VIEW_WIDTH);
+                ninaViewX = -(Nina_View_Width);
                 break;
             case 3:
                 ninaViewX = (FUll_VIEW_WIDTH);
@@ -372,7 +394,11 @@
 
 #pragma mark - TapAction
 - (void)tapToDismissNinaView {
-    [self showOrDismissNinaViewWithDuration:tapDuration];
+    if (tapDamping > 0 && tapVelocity > 0) {
+        [self showOrDismissNinaViewWithDuration:tapDuration usingNinaSpringWithDamping:tapDamping initialNinaSpringVelocity:tapVelocity];
+    }else {
+        [self showOrDismissNinaViewWithDuration:tapDuration];
+    }
 }
 
 @end

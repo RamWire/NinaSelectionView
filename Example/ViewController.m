@@ -34,7 +34,7 @@
 #pragma mark - LazyLoad
 - (NinaSelectionView *)ninaSelectionView {
     if (!_ninaSelectionView) {
-        _ninaSelectionView = [[NinaSelectionView alloc] initWithTitles:[self titlesArray] PopDirection:NinaPopFromLeftToMiddle];
+        _ninaSelectionView = [[NinaSelectionView alloc] initWithTitles:[self titlesArray] PopDirection:NinaPopFromAboveToMiddle];
         _ninaSelectionView.ninaSelectionDelegate = self;
         _ninaSelectionView.defaultSelected = 1;
         _ninaSelectionView.shadowEffect = YES;
@@ -45,11 +45,12 @@
 #pragma mark - RightBarButtonItemAction
 - (void)popAction {
     [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.5 usingNinaSpringWithDamping:0.8 initialNinaSpringVelocity:0.3];
+//    [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.5];
 }
 
 #pragma mark - NinaSelectionDelegate
 - (void)selectNinaAction:(UIButton *)button {
-    NSLog(@"Select %li button",(long)button.tag);
+    NSLog(@"Choose %li button",(long)button.tag);
     changeStr = button.titleLabel.text;
     [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.3];
     [self.myTableView reloadData];
@@ -73,13 +74,6 @@
                      @"Green",
                      @"Iguodala",
                      @"Durant",
-                     @"Iguodala",
-                     @"Durant",
-                     @"Iguodala",
-                     @"Durant",
-                     @"Curry",
-                     @"Thompson",
-                     @"Green",
                      @"Iguodala",
                      @"Durant",
                      @"Iguodala",
