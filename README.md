@@ -1,2 +1,2 @@
 # NinaSelectionView
-An easy way to choose your selection by NinaSelectionView.
+A dramatic way to select your buttons by NinaSelectionView.
