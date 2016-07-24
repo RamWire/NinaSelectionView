@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, NinaPopDirection) {
 
 @protocol NinaSelectionDelegate <NSObject>
 
-@required
+@optional
 /**
  *  NinaSelectionDelegate
  *
@@ -89,6 +89,10 @@ typedef NS_ENUM(NSInteger, NinaPopDirection) {
  *  If turn on shadowEffect,you can set alpha for shadowView.
  */
 @property (nonatomic, assign) CGFloat shadowAlpha;
+/**
+ *  Set NinaSelection Pop Y.
+ */
+@property (nonatomic, assign) CGFloat nina_popY;
 /**
  *  NinaSelectionDelegate
  */

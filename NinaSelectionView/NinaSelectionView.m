@@ -156,6 +156,14 @@
     }
 }
 
+- (void)setNina_popY:(CGFloat)nina_popY {
+    if (nina_popY > 0 && nina_popY < FUll_CONTENT_HEIGHT_WITHOUT_TAB - SELFHEIGHT) {
+        _nina_popY = nina_popY;
+    }else {
+        NSLog(@"Hey,your nina_popY is not fit for show NinaSelectionView.");
+    }
+}
+
 #pragma mark - LazyLoad
 - (UIView *)shadowView {
     if (!_shadowView) {
@@ -196,7 +204,7 @@
             ninaViewY = verticalScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
         }
         [UIView animateWithDuration:duration animations:^{
-            self.frame = CGRectMake(ninaViewX, ninaViewY, (horizontalScrollMode?FUll_VIEW_WIDTH:Nina_View_Width), selectionHeight);
+            self.frame = CGRectMake(ninaViewX, (((_nina_popY > 0) && showState == YES)?_nina_popY:ninaViewY), (horizontalScrollMode?FUll_VIEW_WIDTH:Nina_View_Width), selectionHeight);
         } completion:^(BOOL finished) {
             if (showState == NO) {
                 self.hidden = YES;
@@ -231,7 +239,7 @@
             ninaViewY = verticalScrollMode?0:(FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2;
         }
         [UIView animateWithDuration:duration delay:0 usingSpringWithDamping:damping initialSpringVelocity:VelocityNum options:UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState animations:^{
-            self.frame = CGRectMake(ninaViewX, ninaViewY, (horizontalScrollMode?FUll_VIEW_WIDTH:Nina_View_Width), selectionHeight);
+            self.frame = CGRectMake(ninaViewX, (((_nina_popY > 0) && showState == YES)?_nina_popY:ninaViewY), (horizontalScrollMode?FUll_VIEW_WIDTH:Nina_View_Width), selectionHeight);
         } completion:^(BOOL finished) {
             if (showState == NO) {
                 self.hidden = YES;
@@ -254,7 +262,7 @@
     }else if (ninaDireciton == 8 || ninaDireciton == 11) {
         ninaViewY = verticalScrollMode?0:FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight;
     }
-    if ((self.frame.origin.y == 0 && self.frame.origin.x == (horizontalScrollMode ?0:Nina_View_X)) || (self.frame.origin.x == (horizontalScrollMode ?0:Nina_View_X) && self.frame.origin.y == (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2) || (self.frame.origin.y == FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight && self.frame.origin.x == (horizontalScrollMode ?0:Nina_View_X))) {
+    if ((self.frame.origin.y == 0 && self.frame.origin.x == (horizontalScrollMode ?0:Nina_View_X)) || (self.frame.origin.y == _nina_popY && self.frame.origin.x == (horizontalScrollMode ?0:Nina_View_X)) || (self.frame.origin.x == (horizontalScrollMode ?0:Nina_View_X) && self.frame.origin.y == (FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight) / 2) || (self.frame.origin.y == FUll_CONTENT_HEIGHT_WITHOUT_TAB - selectionHeight && self.frame.origin.x == (horizontalScrollMode ?0:Nina_View_X))) {
         showState = NO;
         if (_shadowEffect) {
             [UIView animateWithDuration:duration animations:^{

@@ -36,10 +36,10 @@
 
 //NinaSelectionView Parameters
 #define PerNum  3 //Better between 2~5
-#define Nina_Button_X 15
-#define Nina_Button_Height 30
 #define Nina_View_Width FUll_VIEW_WIDTH
 #define Nina_View_X (FUll_VIEW_WIDTH - Nina_View_Width) / 2
+#define Nina_Button_X 15
+#define Nina_Button_Height 30
 #define Nina_Button_Width (Nina_View_Width - 2 * Nina_Button_X - (PerNum - 1) * Nina_Button_Space) / PerNum
 #define Nina_Button_TopSpace 17.5
 #define Nina_Button_Space 10
