@@ -17,21 +17,21 @@
 
 ## Preview
 ### Pop Styles
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewAbove.gif)
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewBelow.gif)
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewLeft.gif)
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewRight.gif)
+![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/NinaSelectionViewAbove.gif)
+![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/NinaSelectionViewBelow.gif)
+![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/NinaSelectionViewLeft.gif)
+![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/NinaSelectionViewRight.gif)
 ### Drag Feature
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewDrag.gif)
+![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/NinaSelectionViewDrag.gif)
 ### LongScrollState
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewHorizontal.gif)
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewVertical.gif)
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewScroll.gif)
+![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/NinaSelectionViewHorizontal.gif)
+![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/NinaSelectionViewVertical.gif)
+![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/NinaSelectionViewScroll.gif)
 
 ## Installation
 
 Drop in the Classes folder to your Xcode project.  
-You can also use cocoapods or Carthage.
+You can also use cocoapods.
 
 #### Using [CocoaPods](http://cocoapods.org/)
 
@@ -65,14 +65,14 @@ Yeah,that's all!
 * You can set necessary Array by following codes(please read the Example notes if you wanna to know more).
 ```objc
 NSArray *titleArray = @[
-                                            @"Curry",
-                                            @"Thompson",
-                                            @"Green",
-                                            @"Iguodala",
-                                            @"Durant"
-                                            ];
+                        @"Curry",
+                        @"Thompson",
+                        @"Green",
+                        @"Iguodala",
+                        @"Durant"
+                        ];
 ```
-* To complete button actions,you need write NinaSelectionDelegate in your codes(like following codes):
+* To complete button actions,you need write **NinaSelectionDelegate** in your codes:
 ```objc
 - (void)selectNinaAction:(UIButton *)button {
     NSLog(@"Choose %li button",(long)button.tag);
@@ -82,7 +82,7 @@ NSArray *titleArray = @[
 ```objc
 _ninaSelectionView.defaultSelected = 1;
 ```
-* Meanwhile,shadow background also can be set.(You must set shadowEffect to YES first,then you can set shadowalpha)
+* Meanwhile,shadow background also can be set.(You must set shadowEffect to **YES** first,then you can set shadowalpha)
 ```objc
 _ninaSelectionView.shadowEffect = YES;
 _ninaSelectionView.shadowAlpha = 0.4;
