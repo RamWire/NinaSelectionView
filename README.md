@@ -17,16 +17,16 @@
 
 ## Preview
 ### Pop Styles
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Compress Gifs/NinaSelectionViewAbove.gif)
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Compress Gifs/NinaSelectionViewBelow.gif)
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Compress Gifs/NinaSelectionViewLeft.gif)
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Compress Gifs/NinaSelectionViewRight.gif)
+![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewAbove.gif)
+![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewBelow.gif)
+![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewLeft.gif)
+![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewRight.gif)
 ### Drag Feature
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Compress Gifs/NinaSelectionViewDrag.gif)
+![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewDrag.gif)
 ### LongScrollState
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Compress Gifs/NinaSelectionViewHorizontal.gif)
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Compress Gifs/NinaSelectionViewVertical.gif)
-![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Compress Gifs/NinaSelectionViewScroll.gif)
+![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewHorizontal.gif)
+![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewVertical.gif)
+![image](https://github.com/RamWire/NinaPagerView/blob/master/Example/Gifs/NinaSelectionViewScroll.gif)
 
 ## Installation
 
