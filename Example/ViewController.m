@@ -38,14 +38,15 @@
         _ninaSelectionView.ninaSelectionDelegate = self;
         _ninaSelectionView.defaultSelected = 1;
         _ninaSelectionView.shadowEffect = YES;
+        _ninaSelectionView.shadowAlpha = 0.1;
     }
     return _ninaSelectionView;
 }
 
 #pragma mark - RightBarButtonItemAction
 - (void)popAction {
-//    [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.5 usingNinaSpringWithDamping:0.8 initialNinaSpringVelocity:0.3];
-    [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.5];
+    [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.5 usingNinaSpringWithDamping:0.8 initialNinaSpringVelocity:0.3];
+//    [self.ninaSelectionView showOrDismissNinaViewWithDuration:0.3];
 }
 
 #pragma mark - NinaSelectionDelegate
@@ -69,13 +70,12 @@
                      @"Green",
                      @"Iguodala",
                      @"Durant",
-                     @"Curry",
-                     @"Thompson",
                      @"Green",
                      @"Iguodala",
                      @"Durant",
-                     @"Iguodala",
-                     @"Durant",
+                     @"Curry",
+                     @"Thompson",
+                     @"Green",
                      @"Iguodala",
                      @"Durant",
                      ];
