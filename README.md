@@ -43,7 +43,7 @@ pod 'NinaSelectionView'
 
 ## Change Log
 ####v0.1.0
-First version.
+First Release.
 
 ## Usage
 You need add '**NinaSelectionView.h**'(**CocoaPods**) to your project.Then load the codes:
@@ -62,7 +62,7 @@ or
 Yeah,that's all!
 
 ### Other Settings and Tips
-* You can set necessary Array by following codes(please read the Example notes if you wanna to know more).
+* You can set necessary Array by following codes(please read the **Example** notes if you wanna to know more).
 ```objc
 NSArray *titleArray = @[
                         @"Curry",
@@ -78,7 +78,7 @@ NSArray *titleArray = @[
     NSLog(@"Choose %li button",(long)button.tag);
 }
 ```
-* You can also set defaultSelected button,it's begin at 1.
+* You can also set defaultSelected button,start from 1.
 ```objc
 _ninaSelectionView.defaultSelected = 1;
 ```
@@ -87,7 +87,7 @@ _ninaSelectionView.defaultSelected = 1;
 _ninaSelectionView.shadowEffect = YES;
 _ninaSelectionView.shadowAlpha = 0.4;
 ```
-* If you wanna change buttons frame(column,width,height) or view frame,you can go to UIParameter.h to change them.
+* If you wanna change buttons' parameters(column,width,height) or view frame,you can go to UIParameter.h to change them.
 
 ## FeedBack
 * If you find bugs in this project or any suggestions,hope you can give me feedback by issues or Email me to zhaogengda@126.com.
