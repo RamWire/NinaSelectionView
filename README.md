@@ -41,10 +41,6 @@ Add `pod 'NinaSelectionView'` to your `Podfile` and run `pod install`.
 pod 'NinaSelectionView'
 ```
 
-## Change Log
-####v0.1.0
-First Release.
-
 ## Usage
 You need add '**NinaSelectionView.h**'(**CocoaPods**) to your project.Then load the codes:
 ```objc
@@ -88,6 +84,10 @@ _ninaSelectionView.shadowEffect = YES;
 _ninaSelectionView.shadowAlpha = 0.4;
 ```
 * If you wanna change buttons' parameters(column,width,height) or view frame,you can go to UIParameter.h to change them.
+
+## Change Log
+####v0.1.0
+First Release.
 
 ## FeedBack
 * If you find bugs in this project or any suggestions,hope you can give me feedback by issues or Email me to zhaogengda@126.com.
