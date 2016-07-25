@@ -38,7 +38,6 @@
         _ninaSelectionView.ninaSelectionDelegate = self;
         _ninaSelectionView.defaultSelected = 1;
         _ninaSelectionView.shadowEffect = YES;
-        _ninaSelectionView.nina_popY = 250;
     }
     return _ninaSelectionView;
 }
