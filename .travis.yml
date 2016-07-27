@@ -1,0 +1,7 @@
+language: objective-c
+osx_image: xcode7
+xcode_project: NinaSelectionView.xcodeproj
+xcode_scheme: NinaSelectionView
+
+script:
+- xctool -project NinaSelectionView.xcodeproj -scheme NinaSelectionView -configuration Debug CODE_SIGN_IDENTITY="" -sdk iphonesimulator test
