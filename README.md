@@ -2,7 +2,8 @@
 [![Language](https://img.shields.io/badge/Language-%20Objective--C%20-orange.svg)](https://img.shields.io/badge/Language-%20Objective--C%20-orange.svg)
 [![Pod Version](http://img.shields.io/cocoapods/v/NinaSelectionView.svg?style=flat)](http://cocoadocs.org/docsets/NinaSelectionView/)
 [![Pod Platform](http://img.shields.io/cocoapods/p/NinaSelectionView.svg?style=flat)](http://cocoadocs.org/docsets/NinaSelectionView/)
-[![Pod License](http://img.shields.io/cocoapods/l/NinaSelectionView.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0.html)<br />
+[![Pod License](http://img.shields.io/cocoapods/l/NinaSelectionView.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![Build Status](https://travis-ci.org/RamWire/NinaSelectionView.svg?branch=master)](https://travis-ci.org/RamWire/NinaSelectionView)<br />
 🇨🇳[中文文档说明](https://github.com/RamWire/NinaSelectionView/blob/master/README_CN.md)
 * A dramatic way to select your buttons by NinaSelectionView.
 
