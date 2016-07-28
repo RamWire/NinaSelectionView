@@ -84,7 +84,7 @@ _ninaSelectionView.defaultSelected = 1;
 _ninaSelectionView.shadowEffect = YES;
 _ninaSelectionView.shadowAlpha = 0.4;
 ```
-* If you wanna change buttons' parameters(column,width,height) or view frame,you can go to UIParameter.h to change them.
+* If you wanna change buttons' parameters(column,width,height),you can go to UIParameter.h to change them.Meanwhile,you can change view' Y by using **nina_popY** in NinaSelectionView.
 
 ## Change Log
 ####v0.1.0
