@@ -5,7 +5,7 @@
 [![Pod License](http://img.shields.io/cocoapods/l/NinaSelectionView.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0.html)
 [![Build Status](https://travis-ci.org/RamWire/NinaSelectionView.svg?branch=master)](https://travis-ci.org/RamWire/NinaSelectionView)<br />
 🇨🇳[中文文档说明](https://github.com/RamWire/NinaSelectionView/blob/master/README_CN.md)
-* A dramatic way to select your buttons by NinaSelectionView.
+* A fantastic way to select your buttons by NinaSelectionView.
 
 ## Features
 - [x] Low coupling to pop NinaSelectionView,just with one-line code methods to use it. 
