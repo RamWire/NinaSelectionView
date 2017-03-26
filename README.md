@@ -1,4 +1,4 @@
-![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/Slice header2.png)
+![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/Sliceheader2.png)
 [![Language](https://img.shields.io/badge/Language-%20Objective--C%20-orange.svg)](https://img.shields.io/badge/Language-%20Objective--C%20-orange.svg)
 [![Pod Version](http://img.shields.io/cocoapods/v/NinaSelectionView.svg?style=flat)](http://cocoadocs.org/docsets/NinaSelectionView/)
 [![Pod Platform](http://img.shields.io/cocoapods/p/NinaSelectionView.svg?style=flat)](http://cocoadocs.org/docsets/NinaSelectionView/)
@@ -87,7 +87,7 @@ _ninaSelectionView.shadowAlpha = 0.4;
 * If you wanna change buttons' parameters(column,width,height),you can go to UIParameter.h to change them.Meanwhile,you can change view' Y by using **nina_popY** in NinaSelectionView.
 
 ## Change Log
-####v0.1.0
+#### v0.1.0
 First Release.
 
 ## FeedBack

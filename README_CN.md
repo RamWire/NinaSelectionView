@@ -1,4 +1,4 @@
-![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/Slice header2.png)
+![image](https://github.com/RamWire/NinaSelectionView/blob/master/Example/Gifs/Sliceheader2.png)
 [![Language](https://img.shields.io/badge/Language-%20Objective--C%20-orange.svg)](https://img.shields.io/badge/Language-%20Objective--C%20-orange.svg)
 [![Pod Version](http://img.shields.io/cocoapods/v/NinaSelectionView.svg?style=flat)](http://cocoadocs.org/docsets/NinaSelectionView/)
 [![Pod Platform](http://img.shields.io/cocoapods/p/NinaSelectionView.svg?style=flat)](http://cocoadocs.org/docsets/NinaSelectionView/)
@@ -87,7 +87,7 @@ _ninaSelectionView.shadowAlpha = 0.4;
 * If you wanna change buttons' parameters(column,width,height) or view frame,you can go to UIParameter.h to change them.如果您觉得默认的按钮参数(例如每排数量、高度、宽度)或整体NinaSelectionView的frame并不是您想要的，您可以去UIParameter.h进行设置，里面应该可以满足您的需求，需要注意的是，如果您想改变弹出view的Y值，NinaSelectionView为您提供了**nina_popY**属性，您可以通过设置它来进行调整。
 
 ## 版本更新说明
-####v0.1.0
+#### v0.1.0
 第一个版本提交。
 
 ## 反馈
